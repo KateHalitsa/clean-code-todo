@@ -3,43 +3,43 @@ const taskInput = document.getElementById("new-task");
 const addButton = document.getElementsByTagName("button")[0];
 const incompleteTaskHolder = document.getElementById("incompleteTasks"); 
 const completedTasksHolder = document.getElementById("completed-tasks");
-
-const createNewTaskElement = function (taskString) {
-  const listItem = document.createElement("li");
-
-  const checkBox = document.createElement("input");
-
-  const label = document.createElement("label"); 
-  
-  const editInput = document.createElement("input"); 
-  
-  const editButton = document.createElement("button");
-
+const createDeleteButton = function () {
   const deleteButton = document.createElement("button");
   const deleteButtonImg = document.createElement("img");
-
-  label.innerText = taskString;
-  label.className = "task";
-
-  checkBox.type = "checkbox";
-  editInput.type = "text";
-  editInput.className = "task";
-
-  editButton.innerText = "Edit"; //innerText encodes special characters, HTML does not.
-  editButton.className = "edit";
 
   deleteButton.className = "delete";
   deleteButtonImg.src = "./remove.svg";
   deleteButton.appendChild(deleteButtonImg);
 
+  return deleteButton;
+};
+
+const createNewTaskElement = function (taskString) {
+  const listItem = document.createElement("li");
+  const checkBox = document.createElement("input");
+  const label = document.createElement("label");
+  const editInput = document.createElement("input");
+  const editButton = document.createElement("button");
+
+  label.innerText = taskString;
+  label.className = "task";
+
+  checkBox.type = "checkbox";
+
+  editInput.type = "text";
+  editInput.className = "task";
+
+  editButton.innerText = "Edit";
+  editButton.className = "edit";
+
   listItem.appendChild(checkBox);
   listItem.appendChild(label);
   listItem.appendChild(editInput);
   listItem.appendChild(editButton);
-  listItem.appendChild(deleteButton);
+  listItem.appendChild(createDeleteButton());
+
   return listItem;
 };
-
 const addTask = function () {
   if (!taskInput.value) return;
   const listItem = createNewTaskElement(taskInput.value);
