@@ -73,9 +73,9 @@ const editTask = function () {
   const editInput = listItem.querySelector("input[type=text]");
   const label = listItem.querySelector("label");
   const editBtn = listItem.querySelector(".edit");
-  const containsClass = listItem.classList.contains("editMode");
+  const isEditing = listItem.classList.contains("editMode");
   //If class of the parent is .editmode
-  if (containsClass) {
+  if (isEditing) {
     //switch to .editmode
     //label becomes the inputs value.
     label.innerText = editInput.value;
@@ -92,14 +92,14 @@ const editTask = function () {
 //Delete task.
 const deleteTask = function () {
   const listItem = this.parentNode;
-  const ul = listItem.parentNode;
+  const taskList = listItem.parentNode;
   //Remove the parent list item from the ul.
-  ul.removeChild(listItem);
+  taskList.removeChild(listItem);
 };
 
-const moveTask = function (taskListItem, targetList, checkBoxHandler) {
-  targetList.appendChild(taskListItem);
-  bindTaskEvents(taskListItem, checkBoxHandler);
+const moveTask = function (taskListItem, targetTaskList, checkBoxChangeHandler) {
+  targetTaskList.appendChild(taskListItem);
+  bindTaskEvents(taskListItem, checkBoxChangeHandler);
 };
 //Mark task completed
 const taskCompleted = function () {
@@ -119,7 +119,7 @@ const taskIncomplete = function () {
 //Set the click handler to the addTask function.
 addButton.addEventListener("click", addTask);
 
-const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
+const bindTaskEvents = function (taskListItem, checkBoxChangeHandler) {
   //select ListItems children
   const checkBox = taskListItem.querySelector("input[type=checkbox]");
   const editButton = taskListItem.querySelector("button.edit");
@@ -130,19 +130,19 @@ const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
   //Bind deleteTask to delete button.
   deleteButton.onclick = deleteTask;
   //Bind taskCompleted to checkBoxEventHandler.
-  checkBox.onchange = checkBoxEventHandler;
+  checkBox.onchange = checkBoxChangeHandler;
 };
 
 
-const cycleTaskHolders = function ( targetList, checkBoxHandler) {
-  for (let i = 0; i < targetList.children.length; i++) {
+const bindEventsToTaskList = function ( targetTaskList, checkBoxChangeHandler) {
+  for (let i = 0; i < targetTaskList.children.length; i++) {
 
-  bindTaskEvents(targetList.children[i], checkBoxHandler);
+  bindTaskEvents(targetTaskList.children[i], checkBoxChangeHandler);
 }
 };
 
-cycleTaskHolders(incompleteTaskHolder,taskCompleted);
-cycleTaskHolders(completedTasksHolder,taskIncomplete);
+bindEventsToTaskList(incompleteTaskHolder,taskCompleted);
+bindEventsToTaskList(completedTasksHolder,taskIncomplete);
 
 // Issues with usability don't get seen until they are in front of a human tester.
 
